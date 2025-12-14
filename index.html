@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Robert Bentley - Creative Portfolio. Web development, game design, writing, and video editing.">
+    <meta name="keywords" content="portfolio, web development, game design, writing, interactive stories, HTML, CSS, JavaScript, Unity, Blender">
+    <meta name="author" content="Robert Bentley">
+    <title>Robert Bentley - Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="theme-color" content="#000000">
+</head>
+<body>
+    <header id="header" role="banner" class="site-header">
+        <nav role="navigation" aria-label="Main navigation" class="main-nav">
+            <a href="#hero" class="nav-link" data-section="hero">Work</a>
+            <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+            <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+            <a href="#about" class="nav-link" data-section="about">About</a>
+        </nav>
+    </header>
+
+    <main role="main">
+        <section id="hero" class="hero" role="region" aria-label="Hero">
+            <h1>Robert Bentley</h1>
+            <p class="subtitle">Creating immersive experiences through code, design, and storytelling</p>
+        </section>
+
+        <section id="projects" class="projects" role="region" aria-label="Projects">
+            <h2>Projects</h2>
+            
+            <article class="project-category" data-category="games">
+                <h3>Games</h3>
+                <div class="project-grid" id="games-grid"></div>
+            </article>
+
+            <article class="project-category" data-category="writing">
+                <h3>Writing</h3>
+                <div class="project-grid" id="writing-grid"></div>
+            </article>
+
+            <article class="project-category" data-category="other">
+                <h3>Other</h3>
+                <div class="project-grid" id="other-grid"></div>
+            </article>
+        </section>
+
+        <section id="content-viewer" class="content-viewer" role="region" aria-label="Project content" aria-live="polite">
+            <button id="close-viewer" class="close-viewer" aria-label="Close content viewer">
+                <span aria-hidden="true">×</span>
+            </button>
+            <article id="viewer-content" class="viewer-content"></article>
+        </section>
+
+        <section id="skills" class="skills" role="region" aria-label="Skills">
+            <h2>Skills</h2>
+            <div class="skills-container">
+                <article class="skill-group" data-skill="writing">
+                    <h3>Writing</h3>
+                    <p class="skill-description">Fictional and interactive narratives</p>
+                    <ul class="skill-connections" role="list">
+                        <li>Interactive Stories</li>
+                        <li>Character Development</li>
+                        <li>Narrative Design</li>
+                    </ul>
+                </article>
+
+                <article class="skill-group" data-skill="web">
+                    <h3>Web Development</h3>
+                    <p class="skill-description">Building responsive and semantic experiences</p>
+                    <ul class="skill-connections" role="list">
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </article>
+
+                <article class="skill-group" data-skill="game-design">
+                    <h3>Game Design</h3>
+                    <p class="skill-description">Creating interactive worlds and mechanics</p>
+                    <ul class="skill-connections" role="list">
+                        <li>C#</li>
+                        <li>Unity</li>
+                        <li>Blender</li>
+                    </ul>
+                </article>
+
+                <article class="skill-group" data-skill="video">
+                    <h3>Video Editing</h3>
+                    <p class="skill-description">Self-taught visual storytelling</p>
+                    <ul class="skill-connections" role="list">
+                        <li>Post-production</li>
+                        <li>Color Grading</li>
+                        <li>Motion Graphics</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="about" class="about" role="region" aria-label="About">
+            <h2>About</h2>
+            <article class="about-content">
+                <p>I'm a creative developer passionate about building interactive experiences. With backgrounds spanning web development, game design, and storytelling, I approach each project as an opportunity to blend technical skill with artistic vision.</p>
+                <p>Whether it's crafting intricate narratives, developing engaging web experiences, or designing immersive game worlds, I believe in creating work that resonates and engages.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer id="footer" class="site-footer" role="contentinfo">
+        <nav role="navigation" aria-label="Footer navigation" class="footer-nav">
+            <h3>Contact</h3>
+            <ul role="list">
+                <li><a href="mailto:contact@robertbentley.dev" class="footer-link">Email</a></li>
+                <li><a href="#" class="footer-link">GitHub</a></li>
+                <li><a href="#" class="footer-link">LinkedIn</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
