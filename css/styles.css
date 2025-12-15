@@ -486,3 +486,26 @@ h3 {
         page-break-inside: avoid;
     }
 }
+
+/* Cursor parallax overlay */
+.cursor-overlay{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1500;
+    display:none; /* shown on mouse move */
+}
+.parallax-blob{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    will-change:left,top,transform;
+    mix-blend-mode:screen;
+}
+.cursor-dot{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 6px 18px rgba(43,108,176,0.18);transform:translate(-50%,-50%);pointer-events:none;will-change:transform;}
+.cursor-particle{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(212,175,55,0.95);transform:translate(-50%,-50%);pointer-events:none;will-change:transform,opacity;}
+
+/* disable on touch devices and for reduced-motion */
+@media (pointer:coarse), (prefers-reduced-motion: reduce) {
+    .cursor-overlay{display:none!important}
+}

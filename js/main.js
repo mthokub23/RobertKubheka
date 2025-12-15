@@ -366,3 +366,94 @@ window.addEventListener('error', (e) => {
 
 // Expose closeViewer globally for error fallback
 window.closeViewer = closeViewer;
+
+/* Cursor parallax + particle cluster (desktop only) */
+(function initCursorParallax(){
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+    if (prefersReducedMotion || isCoarse) return;
+
+    // overlay container
+    const overlay = document.createElement('div');
+    overlay.className = 'cursor-overlay';
+    document.body.appendChild(overlay);
+
+    // parallax blobs (subtle blurred gradients)
+    const blobsCfg = [
+        { depth: 0.02, size: 380, color: 'rgba(212,175,55,0.10)' },
+        { depth: 0.06, size: 260, color: 'rgba(43,108,176,0.08)' },
+        { depth: 0.12, size: 140, color: 'rgba(212,175,55,0.06)' }
+    ];
+    const blobs = blobsCfg.map(cfg => {
+        const el = document.createElement('div');
+        el.className = 'parallax-blob';
+        el.style.width = cfg.size + 'px';
+        el.style.height = cfg.size + 'px';
+        el.style.background = `radial-gradient(circle at 30% 30%, ${cfg.color}, transparent 60%)`;
+        el.style.filter = 'blur(40px)';
+        el.dataset.depth = String(cfg.depth);
+        overlay.appendChild(el);
+        return el;
+    });
+
+    // cursor dot
+    const dot = document.createElement('div'); dot.className = 'cursor-dot'; overlay.appendChild(dot);
+
+    // particle cluster
+    const particles = [];
+    const PARTICLE_COUNT = 7;
+    for (let i=0;i<PARTICLE_COUNT;i++){
+        const p = document.createElement('div'); p.className = 'cursor-particle'; overlay.appendChild(p);
+        particles.push({ el: p, x: 0, y: 0, tx: 0, ty: 0, angle: Math.random()*Math.PI*2, rad: 18 + Math.random()*40 });
+    }
+
+    let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+    let dotX = mouseX, dotY = mouseY;
+
+    function show(){ overlay.style.display = 'block'; }
+    function hide(){ overlay.style.display = 'none'; }
+
+    function onMove(e){
+        mouseX = e.clientX; mouseY = e.clientY; show();
+    }
+    function onLeave(){ hide(); }
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseleave', onLeave);
+    window.addEventListener('touchstart', onLeave, {passive:true});
+
+    function lerp(a,b,n){return (1-n)*a + n*b}
+
+    function animate(){
+        // smooth cursor dot
+        dotX = lerp(dotX, mouseX, 0.18);
+        dotY = lerp(dotY, mouseY, 0.18);
+        dot.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%,-50%)`;
+
+        // particles orbit slightly around cursor with lag
+        particles.forEach((p,i)=>{
+            const t = Date.now()/800 + i;
+            const angle = p.angle + t*0.3;
+            const radius = p.rad + Math.sin(Date.now()/500 + i)*6;
+            p.tx = mouseX + Math.cos(angle)*radius;
+            p.ty = mouseY + Math.sin(angle)*radius;
+            p.x = lerp(p.x, p.tx, 0.12 - i*0.01);
+            p.y = lerp(p.y, p.ty, 0.12 - i*0.01);
+            p.el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%,-50%) scale(${0.7 - i*0.04})`;
+            p.el.style.opacity = `${0.95 - i*0.1}`;
+        });
+
+        // parallax blobs track relative to center
+        const cx = window.innerWidth/2, cy = window.innerHeight/2;
+        const dx = (mouseX - cx), dy = (mouseY - cy);
+        blobs.forEach(b => {
+            const depth = parseFloat(b.dataset.depth || '0.05');
+            const bx = cx + dx * depth; const by = cy + dy * depth;
+            b.style.left = `${bx - b.offsetWidth/2}px`;
+            b.style.top = `${by - b.offsetHeight/2}px`;
+        });
+
+        requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+})();
