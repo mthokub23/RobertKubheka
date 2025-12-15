@@ -16,26 +16,79 @@ const projects = {
             skills: ['writing', 'web', 'game-design'],
             type: 'interactive',
             path: './Content/interactive stories/The-Library.html'
-        }
+        },
+        // (external websites moved to 'other' category)
     ],
     writing: [
         {
-            id: 'building-character',
+            id: 'Prose',
             title: 'Building Character',
             description: 'Prose on character development and narrative design',
-            skills: ['writing'],
+            skills: ['Fictional Writing'],
             type: 'pdf',
             path: './Content/PDFs/BuildingCharacter_prose.pdf'
+        },
+        {
+             id: 'Script Writing',
+             title: 'Metaplogic Script',
+             description: 'Script for Metaplogic, a story originally designed as a practice in short story world building, rewritten to be a live action short film script.',
+             skills: ['Fictional Writing'],
+             type: 'pdf',
+             path: './Content/PDFs/Metaplogic_Script.pdf'
+        },
+        {
+            id: 'Short Story Drafting',
+            title: 'Metaplogic Draft',
+            description: 'Metaplogic base draft.',
+            skills: ['Fictional Writing'],
+            type: 'pdf',
+            path: './Content/PDFs/Metaplogic_Script.pdf'
+        },
+        // ADDED: informal essay entry (21 March 2025)
+        {
+            id: 'ai-creativity-2025',
+            title: 'How AI Shapes Creativity & Attention (21 Mar 2025)',
+            description: 'A reflective, informal essay on AI’s influence on creators and consumers.',
+            skills: ['Writing', 'Media Theory'],
+            type: 'essay',
+            path: './Content/essays/AI-Creativity-Attention-2025.html'
+        },
+        // NEW: Bloomberg analysis essay
+        {
+            id: 'bloomberg-bbi-2025',
+            title: 'Bloomberg Billionaires: Data, Design & Storytelling (2025)',
+            description: 'Analysis of Bloomberg’s Billionaires Index—visualization, interactivity and narrative.',
+            skills: ['Data Visualization', 'UX', 'Writing'],
+            type: 'essay',
+            path: './Content/essays/Bloomberg-Billionaires-Analysis-2025.html'
         }
     ],
-    other: []
+    other: [
+        {
+            id: 'fittrack',
+            title: 'FitTrack (FitnessApp Exam)',
+            description: 'React fitness & food tracking app — Nutritionix API.',
+            skills: ['React','API'],
+            type: 'external',
+            path: 'https://mthokub23.github.io/fitnessappexam/'
+        },
+        {
+            id: 'gamedex-01',
+            title: 'GameDex_01',
+            description: 'Gaming database site using RAWG.io API (repo).',
+            skills: ['HTML','JS','CSS','API'],
+            type: 'external',
+            path: 'https://github.com/mthokub23/GameDex_01'
+        }
+    ]
 };
 
 // State
 const state = {
     currentProject: null,
     currentCategory: null,
-    scrollDepth: 0
+    scrollDepth: 0,
+    lastFocusedElement: null // ADDED: track element to restore focus
 };
 
 // DOM Elements
@@ -112,16 +165,56 @@ function getSkillLabel(skillId) {
 // Open project in viewer
 function openProject(project) {
     state.currentProject = project;
+    // If the project is an external link (e.g., a GitHub repo), open in new tab
+    if (project.type === 'external') {
+        window.open(project.path, '_blank', 'noopener');
+        return;
+    }
+    // ADDED: remember the element that triggered opening so we can restore focus
+    state.lastFocusedElement = document.activeElement;
+
     contentViewer.classList.add('active');
     header.style.opacity = '0.5';
     header.style.pointerEvents = 'none';
     document.body.style.overflow = 'hidden';
 
     // Load content
-    if (project.type === 'interactive') {
+    if (project.type === 'interactive' || project.type === 'pdf') {
         viewerContent.innerHTML = `<iframe src="${project.path}" title="${project.title}"></iframe>`;
-    } else if (project.type === 'pdf') {
-        viewerContent.innerHTML = `<iframe src="${project.path}" title="${project.title}"></iframe>`;
+    } else if (project.type === 'essay') {
+        // ADDED: fetch and inject HTML for informal essay (allows custom styles, not a formal article)
+        viewerContent.innerHTML = `<div class="loading">Loading…</div>`;
+        fetch(project.path)
+            .then(res => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.text();
+            })
+            .then(html => {
+                // Insert a temporary <base> element so relative URLs inside the
+                // fetched essay (images, styles, scripts) resolve against the
+                // essay file's directory rather than the host page.
+                try {
+                    const baseHref = project.path.replace(/[^/]*$/, '');
+                    const baseEl = document.createElement('base');
+                    baseEl.id = 'injected-base';
+                    baseEl.href = baseHref;
+                    document.head.appendChild(baseEl);
+                } catch (e) {
+                    // If anything goes wrong, fall back to injecting without base
+                }
+
+                viewerContent.innerHTML = html;
+            })
+            .catch(() => {
+                viewerContent.innerHTML = `
+                    <article class="error-state">
+                        <h3>Unable to load essay</h3>
+                        <p>Sorry — the essay could not be loaded right now.</p>
+                        <button id="err-close">Close</button>
+                    </article>
+                `;
+                document.getElementById('err-close')?.addEventListener('click', closeViewer);
+            });
     }
 
     // Focus management
@@ -140,9 +233,16 @@ function closeViewer() {
     header.style.pointerEvents = 'auto';
     document.body.style.overflow = 'auto';
     state.currentProject = null;
-    
-    // Return focus to the card that was opened
-    document.querySelector('.project-card[data-project-id]')?.focus();
+    // Remove temporary base element if it was added when loading an essay
+    const injectedBase = document.getElementById('injected-base');
+    if (injectedBase) injectedBase.remove();
+    // ADDED: return focus to the previously focused element (the card that opened the viewer)
+    if (state.lastFocusedElement && typeof state.lastFocusedElement.focus === 'function') {
+        state.lastFocusedElement.focus();
+    } else {
+        // fallback: focus first project card if present
+        document.querySelector('.project-card[data-project-id]')?.focus();
+    }
 }
 
 // Setup event listeners

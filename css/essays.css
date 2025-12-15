@@ -1,0 +1,29 @@
+:root{
+  --bg:#fbf8f6; --card:#fff; --accent:#2b6cb0; --muted:#556; --maxw:900px;
+}
+html,body{height:100%}
+body{
+  margin:0; padding:28px; background:var(--bg); font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+  color:#1f2937; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+.container{max-width:var(--maxw); margin:20px auto; background:var(--card); border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.06); padding:28px;}
+header.article-header{display:flex; flex-direction:column; gap:6px; margin-bottom:16px}
+.kicker{display:inline-block; background:#f3f7fb; color:var(--muted); padding:6px 10px; border-radius:999px; font-size:12px}
+h1{margin:6px 0 0;font-size:22px;line-height:1.15}
+.meta{color:var(--muted); font-size:13px; margin-top:6px}
+article.content{line-height:1.65; color:#111; font-size:15px}
+article.content p{margin:12px 0}
+article.content h2, article.content h3{margin:18px 0 8px}
+pre.pseudocode{background:#0f1724;color:#e6f2ff;padding:12px;border-radius:6px;overflow:auto;font-size:13px}
+.pull{font-style:italic;color:#374151;margin:10px 0;padding-left:12px;border-left:3px solid var(--accent)}
+aside.references{margin-top:20px;background:#fbfdff;border-left:3px solid #e6eefb;padding:12px;border-radius:6px}
+.refs-toggle{background:transparent;border:0;color:var(--accent);cursor:pointer;font-weight:600}
+footer.article-footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px;color:var(--muted)}
+.close-btn{background:transparent;border:0;color:var(--accent);cursor:pointer;font-weight:600}
+a.ref {color:var(--accent); text-decoration:underline}
+figure{margin:16px 0; display:block}
+figure .figure-img, figure img{display:block; width:100%; height:auto; max-height:560px; object-fit:contain; border-radius:6px; box-shadow:0 8px 20px rgba(16,24,40,0.06)}
+figcaption{margin-top:8px;color:var(--muted);font-size:13px}
+@media (max-width:640px){body{padding:16px}.container{padding:18px}
+  figure .figure-img, figure img{max-height:360px}
+}
