@@ -62,6 +62,15 @@ const projects = {
             type: 'essay',
             path: './Content/essays/Bloomberg-Billionaires-Analysis-2025.html'
         }
+        ,
+        {
+            id: 'epic-apple-2025',
+            title: 'Legal & Ethical Considerations in Game Development — Epic v. Apple (2025)',
+            description: 'Analysis of Epic Games v. Apple and its implications for developers, platforms and consumers.',
+            skills: ['Writing', 'Game Design', 'Policy'],
+            type: 'essay',
+            path: './Content/essays/Legal-Ethical-Game-Development-Epic-vs-Apple-2025.html'
+        }
     ],
     other: [
         {
