@@ -107,6 +107,10 @@ const closeButton = document.getElementById('close-viewer');
 const footer = document.getElementById('footer');
 const header = document.getElementById('header');
 const navLinks = document.querySelectorAll('.nav-link');
+const projectFilter = document.getElementById('project-filter');
+const filterButtons = projectFilter ? projectFilter.querySelectorAll('.filter-btn') : [];
+const projectCategories = document.querySelectorAll('.project-category');
+const projectCards = document.querySelectorAll('.project-card');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -265,6 +269,94 @@ function setupEventListeners() {
             const section = document.querySelector(link.getAttribute('href'));
             section?.scrollIntoView({ behavior: 'smooth' });
         });
+    });
+
+    // 1. Header: toggle scrolled class
+    function onScroll() {
+        if (window.scrollY > 24) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // 2. Show filter when Projects nav link is clicked and focus first button
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const section = link.getAttribute('data-section');
+            if (section === 'projects') {
+                // show filter
+                if (projectFilter) {
+                    projectFilter.hidden = false;
+                    // small timeout to allow CSS transitions
+                    requestAnimationFrame(() => projectFilter.classList.add('active'));
+                    const first = projectFilter.querySelector('.filter-btn');
+                    if (first) first.focus();
+                }
+            }
+        });
+    });
+
+    // 3. Filter behavior
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.getAttribute('data-filter');
+            // update pressed state
+            filterButtons.forEach(b => b.setAttribute('aria-pressed', 'false'));
+            btn.setAttribute('aria-pressed', 'true');
+
+            projectCategories.forEach(cat => {
+                const catName = cat.getAttribute('data-category');
+                if (filter === 'all' || filter === catName) {
+                    cat.classList.remove('hidden');
+                    cat.removeAttribute('aria-hidden');
+                } else {
+                    cat.classList.add('hidden');
+                    cat.setAttribute('aria-hidden', 'true');
+                }
+            });
+        });
+    });
+
+    // 4. Project card activation -> open content viewer with images & description
+    const viewer = document.getElementById('content-viewer');
+    const viewerContent = document.getElementById('viewer-content');
+    const closeBtn = document.getElementById('close-viewer');
+
+    function openViewer(title, description, imageUrls = []) {
+        const imagesHtml = imageUrls.map(src => `<img src="${src}" alt="${title} image" style="max-width:100%;display:block;margin:1rem 0;border-radius:4px;">`).join('');
+        viewerContent.innerHTML = `<h2>${title}</h2><p>${description}</p>${imagesHtml}`;
+        viewer.classList.add('active');
+        closeBtn.focus();
+    }
+    function closeViewer() {
+        viewer.classList.remove('active');
+        setTimeout(() => { viewerContent.innerHTML = ''; }, 200);
+    }
+
+    closeBtn.addEventListener('click', closeViewer);
+    closeBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') closeViewer();
+    });
+
+    projectCards.forEach(card => {
+        function activate() {
+            const title = card.getAttribute('data-title') || '';
+            const description = card.getAttribute('data-description') || '';
+            const images = (card.getAttribute('data-images') || '').split(',').map(s => s.trim()).filter(Boolean);
+            openViewer(title, description, images);
+        }
+        card.addEventListener('click', activate);
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                activate();
+            }
+        });
+    });
+
+    // close viewer on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && viewer.classList.contains('active')) closeViewer();
     });
 }
 

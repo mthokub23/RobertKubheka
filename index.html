@@ -28,20 +28,103 @@
 
         <section id="projects" class="projects" role="region" aria-label="Projects">
             <h2>Projects</h2>
-            
+
+            <!-- NEW: project filter controls (hidden by default, shown when Projects is clicked) -->
+            <div id="project-filter" class="project-filter" role="tablist" aria-label="Project types" hidden>
+                <button class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+                <button class="filter-btn" data-filter="games">Interactive Stories</button>
+                <button class="filter-btn" data-filter="writing">Writing</button>
+                <button class="filter-btn" data-filter="other">Websites / Apps</button>
+            </div>
+
             <article class="project-category" data-category="games">
                 <h3>Interactive Stories</h3>
-                <div class="project-grid" id="games-grid"></div>
+                <div class="project-grid" id="games-grid">
+                    <!-- example card -->
+                    <div class="project-card" tabindex="0" role="button"
+                         data-title="Echoes of the Fold"
+                         data-description="An interactive branching narrative experimenting with memory."
+                         data-images="https://picsum.photos/seed/echo1/800/480,https://picsum.photos/seed/echo2/800/480,https://picsum.photos/seed/echo3/800/480">
+                        <div class="project-thumb-grid">
+                            <img src="https://picsum.photos/seed/echo1/400/240" alt="Screenshot 1 of Echoes of the Fold">
+                            <img src="https://picsum.photos/seed/echo2/400/240" alt="Screenshot 2 of Echoes of the Fold">
+                            <img src="https://picsum.photos/seed/echo3/400/240" alt="Screenshot 3 of Echoes of the Fold">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Echoes of the Fold</h4>
+                            <p class="project-description">A branching text experience exploring memory and choice.</p>
+                            <div class="project-skills">
+                                <span class="skill-tag">Interactive</span>
+                                <span class="skill-tag">Narrative</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- another sample -->
+                    <div class="project-card" tabindex="0" role="button"
+                         data-title="Paper Lantern"
+                         data-description="Short psychological vignette with dynamic pacing."
+                         data-images="https://picsum.photos/seed/lantern1/800/480,https://picsum.photos/seed/lantern2/800/480">
+                        <div class="project-thumb-grid">
+                            <img src="https://picsum.photos/seed/lantern1/400/240" alt="Screenshot 1 of Paper Lantern">
+                            <img src="https://picsum.photos/seed/lantern2/400/240" alt="Screenshot 2 of Paper Lantern">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Paper Lantern</h4>
+                            <p class="project-description">Atmospheric interactive short exploring loss.</p>
+                            <div class="project-skills">
+                                <span class="skill-tag">Twine</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </article>
 
             <article class="project-category" data-category="writing">
                 <h3>Writing</h3>
-                <div class="project-grid" id="writing-grid"></div>
+                <div class="project-grid" id="writing-grid">
+                    <div class="project-card" tabindex="0" role="button"
+                         data-title="Six Streets"
+                         data-description="Short fiction collection exploring urban memory."
+                         data-images="https://picsum.photos/seed/six1/800/480,https://picsum.photos/seed/six2/800/480">
+                        <div class="project-thumb-grid">
+                            <img src="https://picsum.photos/seed/six1/400/240" alt="Six Streets image 1">
+                            <img src="https://picsum.photos/seed/six2/400/240" alt="Six Streets image 2">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Six Streets</h4>
+                            <p class="project-description">A set of linked microfictions.</p>
+                            <div class="project-skills">
+                                <span class="skill-tag">Fiction</span>
+                                <span class="skill-tag">Editing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </article>
 
             <article class="project-category" data-category="other">
                 <h3>Websites / Apps</h3>
-                <div class="project-grid" id="other-grid"></div>
+                <div class="project-grid" id="other-grid">
+                    <div class="project-card" tabindex="0" role="button"
+                         data-title="Portfolio Revamp"
+                         data-description="A clean, responsive portfolio with accessibility-first patterns."
+                         data-images="https://picsum.photos/seed/port1/800/480,https://picsum.photos/seed/port2/800/480">
+                        <div class="project-thumb-grid">
+                            <img src="https://picsum.photos/seed/port1/400/240" alt="Portfolio screenshot 1">
+                            <img src="https://picsum.photos/seed/port2/400/240" alt="Portfolio screenshot 2">
+                        </div>
+                        <div class="project-info">
+                            <h4 class="project-title">Portfolio Revamp</h4>
+                            <p class="project-description">Responsive, fast, and semantic build.</p>
+                            <div class="project-skills">
+                                <span class="skill-tag">HTML</span>
+                                <span class="skill-tag">CSS</span>
+                                <span class="skill-tag">Accessibility</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </article>
         </section>
 
@@ -101,7 +184,7 @@
             <h2>About</h2>
             <article class="about-content">
                  <img src="Aboutimage.jpg" alt="Robert Bentley" class="about-avatar">
-                <p>I'm a creative developer passionate about building interactive experiences. With backgrounds spanning web development, game design, and storytelling, I approach each project as an opportunity to blend technical skill with artistic vision. I am currently persuing a Bachelors degree in Digital Arts at Wits University with a focus on Interactive Media and Writing/Interactivity. </p>
+                <p>I'm a multimedia designer passionate about building interactive experiences. With backgrounds spanning web development, game design, and storytelling, I approach each project as an opportunity to blend technical skill with artistic vision. I am currently persuing a Bachelors degree in Digital Arts at Wits University with a focus on Interactive Media and Writing/Interactivity. </p>
                 <p>I believe in creating stories that take advantage of the affordances they're made on, while trying to nulify any limitations in innovative design.</p>
             </article>
         </section>
